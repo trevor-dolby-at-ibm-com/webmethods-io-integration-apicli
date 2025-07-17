@@ -138,10 +138,13 @@ async function uploadFileFormData(restEndPoint, user, pass, timeout, data, filen
     formData.append('field_separator', data.field_separator);
     formData.append('text_qualifier', data.text_qualifier);
 
+    const authHeaderName  = (user === 'X-INSTANCE-API-KEY') ? 'X-INSTANCE-API-KEY' : 'Authorization';
+    const authHeaderValue = (user === 'X-INSTANCE-API-KEY') ? pass : 'Basic ' + Buffer.from(user + ':' + pass).toString('base64');
+
     const options = {
         method: method,
         headers: {
-            'Authorization': 'Basic ' + Buffer.from(user + ':' + pass).toString('base64'),
+            authHeaderName: authHeaderValue,
             'Accept': 'application/json',
             ...formData.getHeaders()
         },
@@ -171,7 +174,11 @@ async function custom(restEndPoint, user, pass, timeout, data, contentType, meth
     };
 
     if(user!==undefined && user!==null && user.length>0){
-        options.headers["Authorization"]='Basic ' + Buffer.from(user + ':' + pass).toString('base64');
+        if ( user != "X-INSTANCE-API-KEY" ) {
+           options.headers["Authorization"]='Basic ' + Buffer.from(user + ':' + pass).toString('base64');
+        } else {
+           options.headers["X-INSTANCE-API-KEY"]=pass;
+        }
     }
 
     if (data) {
@@ -227,10 +234,13 @@ async function custom(restEndPoint, user, pass, timeout, data, contentType, meth
 async function downloadFile(restEndPoint, user, pass, timeout, destFile) {
     debug("GET File from: " + restEndPoint);
 
+    const authHeaderName  = (user === 'X-INSTANCE-API-KEY') ? 'X-INSTANCE-API-KEY' : 'Authorization';
+    const authHeaderValue = (user === 'X-INSTANCE-API-KEY') ? pass : 'Basic ' + Buffer.from(user + ':' + pass).toString('base64');
+
     const options = {
         method: 'GET',
         headers: {
-            'Authorization': 'Basic ' + Buffer.from(user + ':' + pass).toString('base64'),
+            authHeaderName: authHeaderValue,
             'Accept': 'application/octet-stream',
         },
         timeout: timeout * 1000,

@@ -130,20 +130,27 @@ function checkOptions() {
     }
   }
 
-  if (program.opts().user == undefined) {
-    tenantUser = readFromConsole('Please type your tenant User ID: ');
+
+  if (program.opts().apikey == undefined) {
+    if (program.opts().user == undefined) {
+      tenantUser = readFromConsole('Please type your tenant User ID: ');
+    }
+    else {
+      tenantUser = program.opts().user
+    }
+
+    if (program.opts().password == undefined) {
+      tenantPw = readFromConsole('Please type your tenant User Password: ', true);
+    }
+    else {
+      tenantPw = program.opts().password
+    }
   }
   else {
-    tenantUser = program.opts().user
+    // Picked up in rest-fetch and used for the auth header
+    tenantUser = "X-INSTANCE-API-KEY"
+    tenantPw = program.opts().apikey
   }
-
-  if (program.opts().password == undefined) {
-    tenantPw = readFromConsole('Please type your tenant User Password: ', true);
-  }
-  else {
-    tenantPw = program.opts().password
-  }
-
 }
 
 function debug(message) {
@@ -158,10 +165,11 @@ program
   .version(versionNo)
 
   //required options
-  .option('-d, --domain <tenantDomain>', 'Tenant Doamin Name, e.g. "tenant.int-aws-us.webmethods.io"')
+  .option('-d, --domain <tenantDomain>', 'Tenant Domain Name, e.g. "tenant.int-aws-us.webmethods.io"')
   .option('-u, --user <userid>', 'Tenant User ID')
   .option('-p, --password <password>', 'Tenant User Password')
   //.requiredOption('-p, --password <password>', 'Tenant User Password')
+  .option('-k, --apikey <apikey>', 'API key for X-INSTANCE-API-KEY header (replaces -u/-p)')
 
   //Positional optoins
   .option('-s, --start <position>', 'Index of where to start the return of data (default 0)')

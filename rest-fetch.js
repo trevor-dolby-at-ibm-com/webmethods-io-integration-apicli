@@ -156,10 +156,13 @@ async function uploadFileFormData(restEndPoint, user, pass, timeout, data, filen
     formData.append('field_separator', data.field_separator);
     formData.append('text_qualifier', data.text_qualifier);
 
+    const authHeaderName  = (user === 'X-INSTANCE-API-KEY') ? 'X-INSTANCE-API-KEY' : 'Authorization';
+    const authHeaderValue = (user === 'X-INSTANCE-API-KEY') ? pass : 'Basic ' + btoa(user + ':' + pass);
+
     const options = {
         method: method,
         headers: {
-            'Authorization': 'Basic ' + btoa(user + ':' + pass),
+            authHeaderName: authHeaderValue,
             'Accept': 'application/json',
             ...formData.getHeaders()
         },
@@ -321,12 +324,16 @@ async function custom(restEndPoint,user,pass,timeout,jsonBody,formBody,type,call
     //Authentication
     if(user!==undefined)
     {
-        options.auth={};
-        options.auth.username = user;
-        options.auth.password = pass;
-        const base64Credentials = Buffer.from(`${user}:${pass}`).toString('base64');
-        options.headers['Authorization']= `Basic ${base64Credentials}`;
-
+        if(user != "X-INSTANCE-API-KEY")
+        {
+            options.auth={};
+            options.auth.username = user;
+            options.auth.password = pass;
+            const base64Credentials = Buffer.from(`${user}:${pass}`).toString('base64');
+            options.headers['Authorization']= `Basic ${base64Credentials}`;
+        } else {
+            options.headers['X-INSTANCE-API-KEY'] = pass;
+        }
     }
 
     //Body Content
