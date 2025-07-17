@@ -1,6 +1,6 @@
 {
   "name": "wmiocli",
-  "version": "2024.11.1",
+  "version": "2025.7.17",
   "description": "webMethods.io Integration API CLI Tool",
   "bin": {
     "wmiocli": "./wmiocli.js"
