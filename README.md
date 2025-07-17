@@ -6,6 +6,9 @@ The --help parameter provides further information on how to use this along with 
 This CLI tool has been tested against
 * webMethods.io Integration v11.0.3
 
+This tool has also been used with IBM webMethods Hybrid Integration using the `--apikey` option to
+allow authentication to succeed in that environment.
+
 # License
 This project is licensed under the Apache 2.0 License - see the LICENSE file for details
 These tools are provided as-is and without warranty or support. They do not constitute part of the webMethods product suite. Users are free to use, fork and modify them, subject to the license agreement. While we welcome contributions, we cannot guarantee to include every contribution in the master project.
@@ -38,6 +41,7 @@ Options:
   -d, --domain <tenantDomain>                                                                                                                Tenant Doamin Name, e.g. "tenant.int-aws-us.webmethods.io"
   -u, --user <userid>                                                                                                                        Tenant User ID
   -p, --password <password>                                                                                                                  Tenant User Password
+  -k, --apikey <apikey>                                                                                                                    API key for X-INSTANCE-API-KEY header (replaces -u/-p)
   -s, --start <position>                                                                                                                     Index of where to start the return of data (default 0)
   -l, --count <count>                                                                                                                        Count of items to return (default 1000)
   -t, --timeout <delay>                                                                                                                      timeout in seconds (default: one minute)
