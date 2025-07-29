@@ -76,7 +76,7 @@ $ node wmiocli.js
     -d tenant.int-aws-us.webmethods.io 
     -u user 
     -p password 
-    project-export myproject.zip MyNewProjectName
+    project-import myproject.zip MyNewProjectName
 
 \x1b[32mGet Project Assets:\x1b[0m
 $ node wmiocli.js 
